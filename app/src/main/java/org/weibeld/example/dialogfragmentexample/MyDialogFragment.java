@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -13,9 +14,12 @@ import android.widget.Toast;
 
 public class MyDialogFragment extends DialogFragment {
 
-    // Called after onCreate and before onCreateView
+    private final String LOG_TAG = MyDialogFragment.class.getSimpleName();
+
+    // Called after onCreate and before onCreateView.
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.v(LOG_TAG, "onCreateDialog");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Add components to the dialog (the order in which components are added does not matter)
         builder.setTitle(R.string.dialog_title).
