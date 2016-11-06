@@ -3,12 +3,15 @@ package org.weibeld.example.dialogfragmentexample;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * Created by dw on 06/11/16.
@@ -17,6 +20,18 @@ import android.widget.Toast;
 public class MyDialogFragment extends DialogFragment {
 
     private final String LOG_TAG = MyDialogFragment.class.getSimpleName();
+
+    int mDialogWidth;
+
+    // onAttach --> onCreate --> (onCreateDialog) --> onCreateView
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.v(LOG_TAG, "onCreate");
+        // Set the width of the dialog to the width of the screen in portrait mode
+        DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+        mDialogWidth = Math.min(metrics.widthPixels, metrics.heightPixels);
+    }
 
     // onCreate --> (onCreateDialog) --> onCreateView --> onActivityCreated
     @Override
@@ -46,6 +61,13 @@ public class MyDialogFragment extends DialogFragment {
         });
 
         return dialogView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(LOG_TAG, "onResume");
+        getDialog().getWindow().setLayout(mDialogWidth, WRAP_CONTENT);
     }
 
     // If dialog is cancelled: onCancel --> onDismiss
