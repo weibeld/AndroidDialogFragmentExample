@@ -13,61 +13,63 @@ import android.widget.Toast;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-/**
- * Created by dw on 06/11/16.
- */
 
 public class MyDialogFragment extends DialogFragment {
 
     private final String LOG_TAG = MyDialogFragment.class.getSimpleName();
 
-    int mDialogWidth;
-
-    // onAttach --> onCreate --> (onCreateDialog) --> onCreateView
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.v(LOG_TAG, "onCreate");
-        // Set the width of the dialog to the width of the screen in portrait mode
-        DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
-        mDialogWidth = Math.min(metrics.widthPixels, metrics.heightPixels);
-    }
-
     // onCreate --> (onCreateDialog) --> onCreateView --> onActivityCreated
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.v(LOG_TAG, "onCreateView");
+
         View dialogView = inflater.inflate(R.layout.dialog_content, container, false);
 
+        // "Got it" button
         Button buttonPos = (Button) dialogView.findViewById(R.id.pos_button);
         buttonPos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToast(getString(R.string.pos_button));
-                // Dismiss the dialog (remove it from view)
+                // Dismiss the DialogFragment (remove it from view)
                 dismiss();
             }
         });
 
+        // "Cancel" button
         Button buttonNeg = (Button) dialogView.findViewById(R.id.neg_button);
         buttonNeg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToast(getString(R.string.neg_button));
-                // Cancel the dialog (cancel --> dismiss). This is the same as when the user clicks
-                // anywhere outside the dialog window, or clicks the Back button.
-                getDialog().cancel();
+                // If shown as dialog, cancel the dialog (cancel --> dismiss)
+                if (getShowsDialog())
+                    getDialog().cancel();
+                // If shown as Fragment, dismiss the DialogFragment (remove it from view)
+                else
+                    dismiss();
             }
         });
 
         return dialogView;
     }
 
+    // If shown as dialog, set the width of the dialog window
+    // onCreateView --> onActivityCreated -->  onViewStateRestored --> onStart --> onResume
     @Override
     public void onResume() {
         super.onResume();
         Log.v(LOG_TAG, "onResume");
-        getDialog().getWindow().setLayout(mDialogWidth, WRAP_CONTENT);
+        if (getShowsDialog()) {
+            // Set the width of the dialog to the width of the screen in portrait mode
+            DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+            int dialogWidth = Math.min(metrics.widthPixels, metrics.heightPixels);
+            getDialog().getWindow().setLayout(dialogWidth, WRAP_CONTENT);
+        }
+    }
+
+    private void showToast(String buttonName) {
+        Toast.makeText(getActivity(), "Clicked on \"" + buttonName + "\"", Toast.LENGTH_SHORT).show();
     }
 
     // If dialog is cancelled: onCancel --> onDismiss
@@ -81,36 +83,5 @@ public class MyDialogFragment extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         Log.v(LOG_TAG,"onDismiss");
-    }
-
-
-
-    // Called after onCreate and before onCreateView.
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        Log.v(LOG_TAG, "onCreateDialog");
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        // Add components to the dialog (the order in which components are added does not matter)
-//        builder.setTitle(R.string.dialog_title).
-//                setMessage(R.string.dialog_message).
-//                setView(R.layout.dialog_content).  // For < API 21 use setView(View)
-//                setPositiveButton(R.string.pos_button, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        showToast(getString(R.string.pos_button));
-//                    }
-//                }).
-//                setNegativeButton(R.string.neg_button, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        showToast(getString(R.string.neg_button));
-//                    }
-//                });
-//        AlertDialog dialog = builder.create();
-//        return dialog;
-//    }
-
-    private void showToast(String buttonName) {
-        Toast.makeText(getActivity(), "Clicked on \"" + buttonName + "\"", Toast.LENGTH_SHORT).show();
     }
 }
