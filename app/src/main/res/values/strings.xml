@@ -6,5 +6,6 @@
     <string name="dialog_title">Dialog Title</string>
     <string name="pos_button">Got it</string>
     <string name="neg_button">Cancel</string>
-    <string name="dialog_message">I am a bare bones dialog. I don\'t survive on screen rotation and Activity restart.</string>
+    <string name="dialog_message">I am a dialog managed by a DialogFragment. I was created in onCreateDialog of DialogFragment.</string>
+    <string name="dialog_tag">dialog</string>
 </resources>
