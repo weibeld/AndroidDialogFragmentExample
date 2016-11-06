@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DialogFragment Example</string>
+    <string name="button_text">Click me</string>
+</resources>
