@@ -1,6 +1,7 @@
 package org.weibeld.example.dialogfragmentexample;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 MyDialogFragment dialogFrag = new MyDialogFragment();
                 FragmentManager fm = getFragmentManager();
-                dialogFrag.show(fm, getString(R.string.dialog_tag));
+                FragmentTransaction trans = fm.beginTransaction();
+                trans.add(android.R.id.content, dialogFrag).addToBackStack(null).commit();
             }
         });
     }
