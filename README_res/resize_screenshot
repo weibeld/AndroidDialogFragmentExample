@@ -1,0 +1,2 @@
+#!/bin/bash
+convert screenshot.png -resize 20% screenshot_small.png
