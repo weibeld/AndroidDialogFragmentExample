@@ -54,21 +54,21 @@ The traditional way of creating dialogs is by creating an AlertDialog object wit
 Dialogs With DialogFragment
 ---------------------------
 
-In API level 11 (Android 3.0 Honeycomb) DialogFragment has been introduced. It is basically a fragment managing and holding a dialog. It can display either the dialog it holds (as a dialog), or it can display itself as a fragment.
+In API level 11 (Android 3.0 Honeycomb) DialogFragment has been introduced. It is basically a fragment managing and holding a dialog. It can display either the dialog it holds (as a dialog), or it can display itself as a fragment. To use a DialogFragment, create a subclass  of DialogFragment.
 
 ### Advantages
 
 The advantages of DialogFragment over creating a dialog directly ([1_bare_bones_dialog](https://github.com/weibeld/AndroidDialogFragmentExample/tree/1_bare_bones_dialog)) are:
 
 - The dialog is maintained across screen rotations and other activity restarts
-- The same UI can be displayed as a dialog or as an embeddable fragment without changing the code of DialogFragment
+- The same UI can be displayed as a dialog or as an embeddable fragment without changing the code of the DialogFragment
 
 ### Ways to create the UI of a DialogFragment
 
 There are two ways to implement the UI of a DialogFragment:
 
 1. In **onCreateDialog**: create and return an **AlertDialog**, the dialog can be built with AlertDialog.Builder
-2. In **onCreateView**: create and return a **View** which will be used for the dialog or fragment, the view must be defined in a layout XML
+2. In **onCreateView**: create and return a **View** which will be used for the dialog or fragment, the view must be defined in a layout XML file
 
 The *advantage* of using **onCreateDialog** is that the dialog can be created with AlertDialog.Builder and thus has the look and feel of a standard dialog. The *disadvantage* is that the dialog cannot be displayed as a fragment.
 
